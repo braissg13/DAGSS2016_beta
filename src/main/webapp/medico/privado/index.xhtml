@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="/plantillas/plantillaComun.xhtml">
+
+            <ui:define name="tituloPagina">
+                Pagina principal de Médicos
+            </ui:define>            
+
+            <ui:define name="izquierda">
+                <ui:include src="/medico/plantillas/menuMedico.xhtml"/>
+            </ui:define>
+
+            <ui:define name="contenido">
+                <h:form>
+                    <h:dataTable value="#{citaControlador.showCitasHOY()}" var="cita">
+                        <h:column>
+                            <f:facet name="header"> Nombre </f:facet>
+                            <h:outputText value="#{cita.paciente.nombre}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header"> Hora </f:facet>
+                            <h:outputText value="#{cita.hora}">
+                                <f:convertDateTime pattern="hh:MM"/>
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header"> Estado </f:facet>
+                            <h:outputText value="#{cita.estado}"/>
+                        </h:column>
+                        
+                        <h:column>
+                            <h:commandButton value="Atender Cita" rendered="#{cita.estado=='PLANIFICADA'}" action="#{citaControlador.doVerCita(cita.id)}" />
+                        </h:column>
+                        
+                        
+                    </h:dataTable>
+                </h:form>   
+                
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>
