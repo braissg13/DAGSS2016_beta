@@ -5,11 +5,18 @@ package es.uvigo.esei.dagss.controladores.farmacia;
 
 import es.uvigo.esei.dagss.controladores.autenticacion.AutenticacionControlador;
 import es.uvigo.esei.dagss.dominio.daos.FarmaciaDAO;
+import es.uvigo.esei.dagss.dominio.daos.RecetaDAO;
+import es.uvigo.esei.dagss.dominio.entidades.EstadoReceta;
 import es.uvigo.esei.dagss.dominio.entidades.Farmacia;
+import es.uvigo.esei.dagss.dominio.entidades.Receta;
 import es.uvigo.esei.dagss.dominio.entidades.TipoUsuario;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -26,12 +33,17 @@ public class FarmaciaControlador implements Serializable {
     private Farmacia farmaciaActual;
     private String nif;
     private String password;
+    private String tarjetaSanitaria;
+    private Receta recetaActual;
 
     @Inject
     private AutenticacionControlador autenticacionControlador;
 
     @EJB
     private FarmaciaDAO farmaciaDAO;
+    
+    @EJB
+    private RecetaDAO recetaDAO;
 
     /**
      * Creates a new instance of AdministradorControlador
@@ -61,6 +73,52 @@ public class FarmaciaControlador implements Serializable {
 
     public void setFarmaciaActual(Farmacia farmaciaActual) {
         this.farmaciaActual = farmaciaActual;
+    }
+    
+    public String getTarjetaSanitaria() {
+        return tarjetaSanitaria;
+    }
+
+    public void setTarjetaSanitaria(String tarjetaSanitaria) {
+        this.tarjetaSanitaria = tarjetaSanitaria;
+    }
+    
+    public Receta getRecetaActual() {
+        return recetaActual;
+    }
+
+    public void setRecetaActual(Receta recetaActual) {
+        this.recetaActual = recetaActual;
+    }
+    
+    public String buscarPorTarjetaSanitaria(){
+        if(tarjetaSanitaria.length() == 10){
+            return "farmacias/recetas_paciente";
+        }else{
+            return null;
+        }
+    }
+    
+     public String doVerReceta(Receta receta) {
+        recetaActual = receta;
+        
+        return "receta_actual";
+    }
+     
+     public EstadoReceta[]  getEstadosRecetas() {
+        return EstadoReceta.values();
+    }
+     
+     public void modificarEstado() {
+        recetaActual = recetaDAO.actualizar(recetaActual);
+        
+    }
+    
+    public List<Receta> showRecetas(){
+     String DATE_FORMAT = "yyyyMMdd";
+     SimpleDateFormat sdf =new SimpleDateFormat(DATE_FORMAT);
+     Date hoy = Calendar.getInstance().getTime();
+    return recetaDAO.buscarRecetas(tarjetaSanitaria,hoy);
     }
 
     private boolean parametrosAccesoInvalidos() {

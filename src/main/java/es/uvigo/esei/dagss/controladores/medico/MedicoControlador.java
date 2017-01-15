@@ -8,6 +8,7 @@ import es.uvigo.esei.dagss.dominio.daos.CitaDAO;
 import es.uvigo.esei.dagss.dominio.daos.MedicoDAO;
 import es.uvigo.esei.dagss.dominio.entidades.Cita;
 import es.uvigo.esei.dagss.dominio.entidades.Medico;
+import es.uvigo.esei.dagss.dominio.entidades.Paciente;
 import es.uvigo.esei.dagss.dominio.entidades.TipoUsuario;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -117,9 +118,7 @@ public class MedicoControlador implements Serializable {
     }
         //Acciones
 
-    public String doShowCita() {
-        return "detallesCita";
-    }
+  
     
     
 }

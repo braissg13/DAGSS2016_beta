@@ -6,10 +6,12 @@ package es.uvigo.esei.dagss.controladores.paciente;
 import es.uvigo.esei.dagss.controladores.autenticacion.AutenticacionControlador;
 import es.uvigo.esei.dagss.dominio.daos.PacienteDAO;
 import es.uvigo.esei.dagss.dominio.entidades.Paciente;
+import es.uvigo.esei.dagss.dominio.entidades.Prescripcion;
 import es.uvigo.esei.dagss.dominio.entidades.TipoUsuario;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -26,10 +28,12 @@ import javax.inject.Inject;
 public class PacienteControlador implements Serializable {
 
     private Paciente pacienteActual;
+    private List<Prescripcion> prescripciones;
     private String dni;
     private String numeroTarjetaSanitaria;
     private String numeroSeguridadSocial;
     private String password;
+    private String DNIbuscar;
 
     @Inject
     private AutenticacionControlador autenticacionControlador;
@@ -86,6 +90,28 @@ public class PacienteControlador implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public String getNombrePorTarjetaSanitaria(String numeroTarjetaSanitaria){
+        String nombre,apellidos,pac;
+        Paciente paciente;
+        paciente = pacienteDAO.buscarPorTarjetaSanitaria(numeroTarjetaSanitaria);
+        
+        nombre = paciente.getNombre();
+        apellidos = paciente.getApellidos();
+        
+        return pac = nombre+" "+apellidos;
+    }
+    
+    public String getNombrePorDni(String dni){
+        String nombre,apellidos,pac;
+        Paciente paciente;
+        paciente = pacienteDAO.buscarPorDNI(dni);
+        
+        nombre = paciente.getNombre();
+        apellidos = paciente.getApellidos();
+        
+        return pac = nombre+" "+apellidos;
+    }
 
     private boolean parametrosAccesoInvalidos() {
         return (((dni == null) && (numeroSeguridadSocial == null) && (numeroTarjetaSanitaria == null))
@@ -105,7 +131,8 @@ public class PacienteControlador implements Serializable {
         }
         return paciente;
     }
-
+    
+    
     public String doLogin() {
         String destino = null;
         if (parametrosAccesoInvalidos()) {

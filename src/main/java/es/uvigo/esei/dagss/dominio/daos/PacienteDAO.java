@@ -51,6 +51,7 @@ public class PacienteDAO extends GenericoDAO<Paciente> {
         q.setParameter("patron","%"+localidad+"%");        
         return q.getResultList();
     }
+   
 
     // Completar aqui
 }
