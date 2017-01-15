@@ -1,0 +1,61 @@
+
+<ui:composition template="/plantillas/plantillaComun.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+   <f:metadata>
+        <f:event type="preRenderView" listener="#{prescripcionControlador.prescripcionesPaciente()}"/>
+    </f:metadata>
+    <ui:define name="titulo">
+        Re-Z | Médico | Atención Paciente
+    </ui:define>
+    <ui:define name="tituloPagina">
+        Formulario Confeccionar Tratamiento
+    </ui:define>            
+    <ui:define name="izquierda">
+        <ui:include src="/medico/plantillas/menuMedico.xhtml"/>
+    </ui:define>
+    <ui:define name="contenido">
+        <p:growl id="mensajes" life="3000" />
+        <h:form id="formularioListado">     
+            <p:dataTable id="tablaListado"
+                                     value="#{prescripcionControlador.prescripciones}"
+                                     var="prescripcion" 
+                                     selection="#{prescripcionControlador.prescripcionActual}"
+                                     selectionMode="single"
+                                     paginator="true" paginatorPosition="bottom" rows="10" rowKey="#{prescripcion.id}">
+                <p:ajax event="rowSelect" update="botonNuevo botonBorrar"/>
+                <f:facet name="header">
+                    <h:outputText value="Listado de Prescripciones para #{citaControlador.citaActual.paciente.nombre} "/>
+                </f:facet>  
+                <p:column headerText="Medicamento">
+                    <p:outputLabel value="#{prescripcion.medicamento.nombre} "/>
+                </p:column>
+                <p:column headerText="Fecha Inicio">
+                    <p:outputLabel value="#{prescripcion.fechaInicio}">
+                        <f:convertDateTime dateStyle="short"/>
+                    </p:outputLabel>
+                </p:column> 
+                <p:column headerText="Fecha Fin">
+                    <p:outputLabel value="#{prescripcion.fechaFin}">
+                        <f:convertDateTime dateStyle="short"/>
+                    </p:outputLabel>
+                </p:column>
+                <p:column headerText="Dosis">
+                    <p:outputLabel value="#{prescripcion.dosis} " />
+                </p:column>                                    
+                <p:column headerText="Indicaciones">
+                    <p:outputLabel value="#{prescripcion.indicaciones} "/>
+                </p:column>                         
+                <f:facet name="footer">
+                    <p:commandButton id="botonNuevo"  icon="ui-icon-plus"   value="Nueva"  actionListener="#{prescripcionControlador.doNuevo()}" update=":formularioNuevo" oncomplete="PF('DialogoNuevo').show()"/>
+                    <p:commandButton id="botonBorrar" icon="ui-icon-trash"  value="Borrar" actionListener="#{prescripcionControlador.doEliminar()}" update=":mensajes,tablaListado" disabled="#{empty prescripcionControlador.prescripcionActual}"  onclick="return confirm('¿Borrar Prescripción?')"/>           
+                    <p:commandButton id="botonAtras" icon="ui-icon-circle-arrow-w"  value="Atras" onclick="history.back()" />           
+                </f:facet>
+            </p:dataTable>
+        </h:form>   
+        <ui:include src="fragmentoDialogoNuevo.xhtml"/>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui">
+    <ui:composition>
+        <p:dialog id="dialogoNuevo" widgetVar="DialogoNuevo" modal="true" resizable="false" appendTo="@(body)" header="Nueva Prescripción">
+            <h:form id="formularioNuevo">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{prescripcionControlador.prescripcionActual != null}">
+                        <!--
+                        Se selecciona uno de los medicamentos existentes
+                        -->
+                        <p:outputLabel value="Medicamento:" for="medicamento"/>
+                        <p:selectOneMenu id="medicamento" value="#{prescripcionControlador.prescripcionActual.medicamento}"
+                                         converter="omnifaces.SelectItemsConverter">                
+                            <f:selectItems var="itemMedicamento" value="#{prescripcionControlador.medicamentos}"                                           
+                                           itemValue="#{itemMedicamento}" 
+                                           itemLabel="#{itemMedicamento.nombre}, #{itemMedicamento.fabricante}, #{itemMedicamento.familia}" />
+                        </p:selectOneMenu>     
+                        
+                        <!--
+                        Se completa la información de la prescripción: fechas, dosis e indicaciones.
+                        -->
+                        <p:outputLabel value="Dosis:" for="dosis"/>
+                        <p:inputText id="dosis" value="#{prescripcionControlador.prescripcionActual.dosis}" required="true"/>
+                        
+                        <p:outputLabel value="Fecha Inicio:" for="fechaInicio"/>
+                        <p:calendar id="fechaInicio" value="#{prescripcionControlador.prescripcionActual.fechaInicio}" mindate="#{now}" pages="2" required="true"/>       
+                        
+                        <p:outputLabel value="Fecha Fin:" for="fechaFin"/>
+                        <p:calendar id="fechaFin" value="#{prescripcionControlador.prescripcionActual.fechaFin}" mindate="#{now}" pages="2" required="true"/>      
+                        
+                        <p:outputLabel value="Indicaciones:" for="indicaciones"/>
+                        <p:editor id="indicaciones" widgetVar="editorWidget" value="#{prescripcionControlador.prescripcionActual.indicaciones}" width="300" required="true"/>
+                        
+                    </p:panelGrid>
+                    <br></br>
+                    
+                    <p:commandButton value="Guardar" actionListener="#{prescripcionControlador.doGuardarNuevo()}"  
+                                     update="display,:formularioListado:tablaListado,:mensajes" 
+                                     oncomplete="PF('DialogoNuevo').hide()"/>
+                    <p:commandButton value="Cancelar" onclick="PF('DialogoNuevo').hide()"/>
+                    
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>  
+</html>

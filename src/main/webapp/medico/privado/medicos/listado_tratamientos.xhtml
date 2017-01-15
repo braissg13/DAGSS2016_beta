@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="/plantillas/plantillaComun.xhtml">
+
+            <ui:define name="tituloPagina">
+                Pagina Ver Tratamiento
+            </ui:define>            
+
+            <ui:define name="izquierda">
+                <ui:include src="/medico/plantillas/menuMedico.xhtml"/>
+            </ui:define>
+            
+             <ui:define name="contenido"> 
+
+            <p:growl id="mensajes" life="3000" />
+        <h:form id="formularioListado">     
+            <p:dataTable id="tablaListado"
+                                     value="#{prescripcionControlador.prescripciones}"
+                                     var="prescripcion" 
+                                     selection="#{prescripcionControlador.prescripcionActual}"
+                                     selectionMode="single"
+                                     paginator="true" paginatorPosition="bottom" rows="10" rowKey="#{prescripcion.id}">
+                <!--<p:ajax event="rowSelect" update="botonEditar botonBorrar"/>-->
+                <f:facet name="header">
+                    <h:outputText value="Listado de Prescripciones para #{pacienteControlador.getNombrePorDni(prescripcionControlador.getDni())} "/>
+                </f:facet>  
+                <p:column headerText="Medicamento">
+                    <p:outputLabel value="#{prescripcion.medicamento.nombre} "/>
+                </p:column>
+                <p:column headerText="Dosis">
+                    <p:outputLabel value="#{prescripcion.dosis} " />
+                </p:column>                                    
+                <p:column headerText="Indicaciones">
+                    <p:outputLabel value="#{prescripcion.indicaciones} "/>
+                </p:column>  
+                <p:column headerText="Fecha Inicio">
+                    <p:outputLabel value="#{prescripcion.fechaInicio}">
+                        <f:convertDateTime dateStyle="short"/>
+                    </p:outputLabel>
+                </p:column> 
+                <p:column headerText="Fecha Fin">
+                    <p:outputLabel value="#{prescripcion.fechaFin}">
+                        <f:convertDateTime dateStyle="short"/>
+                    </p:outputLabel>
+                </p:column>                       
+                <f:facet name="footer">
+                    <p:commandButton id="botonEditar"  icon="ui-icon-plus"   value="Editar"  actionListener="{prescripcionControlador.doEditar(prescripcionActual)}" update=":formularioEditar" oncomplete="PF('DialogoEditar').show()"/>
+                    <p:commandButton id="botonBorrar" icon="ui-icon-trash"  value="Borrar" actionListener="#{prescripcionControlador.doEliminar()}" update=":mensajes,tablaListado" disabled="#{empty prescripcionControlador.prescripcionActual}"  onclick="return confirm('¿Borrar Prescripción?')"/>           
+                    <p:commandButton id="botonAtras" icon="ui-icon-circle-arrow-w"  value="Atras" onclick="history.back()" />           
+                </f:facet>
+            </p:dataTable>
+        </h:form>   
+        <ui:include src="fragmentoDialogoEditar.xhtml"/>
+             </ui:define>
+            
+        </ui:composition>
+        
+    </body>
+
+</html>

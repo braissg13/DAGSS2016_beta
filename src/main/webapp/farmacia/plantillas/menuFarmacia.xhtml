@@ -7,18 +7,14 @@
     <ui:composition>
         <h:form>
             <p:menu>
-                <p:menuitem value="Inicio" outcome="/medico/privado/index" icon="ui-icon-home"/>
+                <p:menuitem value="Inicio" outcome="/farmacia/privado/index" icon="ui-icon-home"/>
                 <p:menuitem rendered="#{autenticacionControlador.usuarioAutenticado}"
                             value="Desconectar" 
                             action="#{autenticacionControlador.doLogOut()}"
                             icon="ui-icon-extlink"/>
-                
-                <p:submenu label="Perfil">
-                    <p:menuitem value="Ver Perfil" outcome="/medico/privado/medicos/ver_perfil.xhtml" />
-                    <p:menuitem value="Modificar Perfil" outcome="/medico/privado/medicos/modificar_perfil.xhtml" />
-                </p:submenu>
-                <p:submenu label="Tratamientos">                            
-                    <p:menuitem value="Ver Tratamientos" outcome="/medico/privado/medicos/ver_tratamientos.xhtml" />
+
+                <p:submenu label="Pacientes">                            
+                    <p:menuitem value="Buscar Recetas Paciente" outcome="/farmacia/privado/index.xhtml" />
                 </p:submenu>
                 
             </p:menu>

@@ -11,7 +11,7 @@
         <ui:composition template="/plantillas/plantillaComun.xhtml">
 
             <ui:define name="tituloPagina">
-                Pagina Obseervar Cita
+                Pagina Observar Cita
             </ui:define>            
 
             <ui:define name="izquierda">
@@ -19,7 +19,42 @@
             </ui:define>
 
             <ui:define name="contenido"> 
+                <h3> Detalle Cita </h3>
                 
+                <h:form>                     
+                    <p:panelGrid columns="2">
+                        <f:facet name="header">
+                            <p:outputLabel value="Detalles de la cita"/>
+                        </f:facet>
+
+                        <p:outputLabel value="Nombre"/>
+                        <p:outputLabel value="#{citaControlador.citaActual.paciente.nombre}"/>
+
+                        <p:outputLabel value="Apellidos"/>
+                        <p:outputLabel value="#{citaControlador.citaActual.paciente.apellidos}"/>
+                        
+                        <p:outputLabel value="Hora"/>
+                        <h:outputText value="#{citaControlador.citaActual.hora}">
+                                <f:convertDateTime pattern="hh:MM"/>
+                        </h:outputText>
+
+                        <p:outputLabel value="Estado"/>
+                        <p:outputLabel value="#{citaControlador.citaActual.estado}"/>
+                        <h:commandButton value="Confeccionar Tratamiento" action="#{citaControlador.doVerPrescripcion()}"/>
+                    </p:panelGrid>
+                </h:form>       
+                
+                <h3>Cambiar Estado Cita </h3>
+                <h:form>
+                    <p:panelGrid columns="2" rendered="#{citaControlador.citaActual != null}">
+                        <p:outputLabel value="Estado:"/>
+                        <p:selectOneMenu value="#{citaControlador.citaActual.estado}" >
+                            <f:selectItems value="#{citaControlador.estadosCitas}" />
+                        </p:selectOneMenu>
+                        <h:commandButton value="Modificar Estado" action="#{citaControlador.modificarEstado()}" />
+                    </p:panelGrid>
+                </h:form>
+                   
             </ui:define>
         </ui:composition>
 

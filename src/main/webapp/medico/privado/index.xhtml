@@ -26,6 +26,10 @@
                             <h:outputText value="#{cita.paciente.nombre}"/>
                         </h:column>
                         <h:column>
+                            <f:facet name="header"> Apellido </f:facet>
+                            <h:outputText value="#{cita.paciente.apellidos}"/>
+                        </h:column>
+                        <h:column>
                             <f:facet name="header"> Hora </f:facet>
                             <h:outputText value="#{cita.hora}">
                                 <f:convertDateTime pattern="hh:MM"/>
@@ -37,7 +41,7 @@
                         </h:column>
                         
                         <h:column>
-                            <h:commandButton value="Atender Cita" rendered="#{cita.estado=='PLANIFICADA'}" action="#{citaControlador.doVerCita(cita.id)}" />
+                            <h:commandButton value="Atender Cita" rendered="#{cita.estado=='PLANIFICADA'}" action="#{citaControlador.doVerCita(cita)}" />
                         </h:column>
                         
                         

@@ -14,10 +14,18 @@
             </ui:define>            
 
             <ui:define name="izquierda">
-                <ui:include src="/plantillas/menuComun.xhtml"/>
+                <ui:include src="/farmacia/plantillas/menuFarmacia.xhtml"/>
             </ui:define>
 
             <ui:define name="contenido">
+               <h:form id="form">
+                <h4> Buscar Tratamientos de Paciente </h4>
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="Introducir Nº Tarjeta Paciente:"/>
+                        <h:inputText value="#{farmaciaControlador.tarjetaSanitaria}" maxlength="10"/>
+                        <h:commandButton value="Buscar" action="#{farmaciaControlador.buscarPorTarjetaSanitaria()}"/>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
 
         </ui:composition>

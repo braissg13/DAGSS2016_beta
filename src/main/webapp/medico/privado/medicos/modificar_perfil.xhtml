@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <ui:composition template="/plantillas/plantillaComun.xhtml">
+            
+            <ui:define name="tituloPagina">
+                Modificar Perfil
+            </ui:define>            
+
+            <ui:define name="izquierda">
+                <ui:include src="/medico/plantillas/menuMedico.xhtml"/>
+            </ui:define>
+        
+                 <ui:define name="contenido">
+
+                <p:growl id="mensajes" life="3000" />
+
+                <h:form id="perfil">  
+                    <p:dataTable id="tablaperfil"
+                                     value="#{medicoControlador.medicoActual}"
+                                     var="medicoAct" >
+
+                            <f:facet name="header">
+                                <h:outputText value="Perfil"/>
+                            </f:facet>                        
+                        
+                            <p:column headerText="Nombre">
+                                <p:inputText id ="nombre" value="#{medicoControlador.medicoActual.nombre}" required="true"/>
+                                <p:message for="nombre"/>
+                            </p:column>
+                        
+                            <p:column headerText="Apellidos">
+                                <p:inputText id ="apellidos" value="#{medicoControlador.medicoActual.apellidos}" required="true"/>
+                                <p:message for="apellidos"/>
+                            </p:column>                    
+
+                            <p:column headerText="DNI">
+                                <p:inputText id ="dni" value="#{medicoControlador.medicoActual.dni}" required="true"/>
+                                <p:message for="dni"/>
+                            </p:column>
+
+                            <p:column headerText="Email">
+                                <p:inputText id ="email" value="#{medicoControlador.medicoActual.email}" required="true"/>
+                                <p:message for="email"/>
+                            </p:column>
+
+                            <p:column headerText="Número Colegiado">
+                                <p:outputLabel value="#{medicoControlador.medicoActual.numeroColegiado}" />
+                            </p:column>
+
+                            <p:column headerText="Teléfono">
+                                <p:inputText id ="telf" value="#{medicoControlador.medicoActual.telefono}" required="true"/>
+                                <p:message for="telf"/>
+                            </p:column>
+
+                            <p:column headerText="Último Acceso">
+                                <p:outputLabel value="#{medicoControlador.medicoActual.ultimoAcceso}" />
+                            </p:column>
+                        
+                         </p:dataTable>
+                
+                </h:form>        
+
+                <h:form>
+            Nueva Password: <h:inputSecret value="#{medicoControlador.medicoActual.password}" />
+            <h:message for="pass"/>
+            </h:form>
+                  <h:form>
+            
+            <h:commandButton  value="Guardar" action="#{medicoControlador.doGuardarNuevosDatos}" />
+            
+                </h:form>
+                
+            </ui:define>
+
+        </ui:composition>
+
+    
+ 
+
+</html>
